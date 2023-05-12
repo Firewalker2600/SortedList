@@ -1,0 +1,49 @@
+{% form_theme insert_form 'bootstrap_4_layout.html.twig' %}
+{% extends 'base.html.twig' %}
+{% block title %}
+    Sorted Linked List
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1>Sorted Linked List</h1>
+        <div class="container">
+            {{ form_start(insert_form) }}
+            {{ form_widget(insert_form) }}
+            <input type="submit" value="Submit" class="btn btn-success">
+            {{ form_end(insert_form) }}
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <h3>IntegerList:</h3>
+                    {% if intList.isEmpty() %}
+                        <p>List is empty</p>
+                    {% else %}
+                        <ul class="list-group-flush" id="intList">
+                            {% for value in intList %}
+                                <li class="list-group-item">
+                                    {{ value }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="col-sm">
+                    <h3>StringList:</h3>
+                    {% if strList.isEmpty() %}
+                        <p>List is empty</p>
+                    {% else %}
+                        <ul class="list-group-flush" id="strList">
+                            {% for value in strList %}
+                                <li class="list-group-item">
+                                    {{ value }}
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
