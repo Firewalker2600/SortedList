@@ -1,3 +1,10 @@
+A symfony project that fullfils following request:
+
+"Implement from scratch a fully working project with SortedLinkedList (linked list that keeps values sorted). Implement only string and int values for example purposes."
+
+Docker image can be downloaded from here:
+#ToDo: paste link to DockerRepository
+
 # Symfony Docker
 
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
