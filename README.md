@@ -1,6 +1,6 @@
-A symfony project that fullfils following request:
+# A symfony project that fullfils following request:
 
-##"Implement from scratch a fully working project with SortedLinkedList (linked list that keeps values sorted). Implement only string and int values for example purposes."
+## "Implement from scratch a fully working project with SortedLinkedList (linked list that keeps values sorted). Implement only string and int values for example purposes."
 
 Docker image can be downloaded from here:
 #ToDo: paste link to DockerRepository
