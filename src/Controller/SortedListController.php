@@ -1,11 +1,12 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Form\Insert;
 use App\Form\InsertFormType;
-use App\Service\SortedLinkedList;
+use App\Service\IntegerSortedLinkedList;
+use App\Service\StringSortedLinkedList;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +18,8 @@ class SortedListController extends AbstractController
     public function home(Request $request): Response
     {
         $session = $request->getSession();
-        $intList = $session->get('intList') ?? new SortedLinkedList();
-        $strList = $session->get('strList') ?? new SortedLinkedList();
+        $intList = $session->get('intList') ?? new IntegerSortedLinkedList();
+        $strList = $session->get('strList') ?? new StringSortedLinkedList();
         $insertForm = $this->createForm(InsertFormType::class, new Insert);
         $insertForm->handleRequest($request);
 
@@ -26,13 +27,17 @@ class SortedListController extends AbstractController
             $data = $insertForm->getData();
             $integer = $data->integer ?? null;
             $string = $data->string ?? null;
-            if($integer !== null) {
-                $intList->insert($integer);
-                $session->set('intList', $intList);
-            }
-            if($string !== null) {
-                $strList->insert($string);
-                $session->set('strList', $strList);
+            try {
+                if($integer !== null) {
+                    $intList->insert((int)$integer);
+                    $session->set('intList', $intList);
+                }
+                if($string !== null) {
+                    $strList->insert($string);
+                    $session->set('strList', $strList);
+                }
+            } catch (InvalidArgumentException $exception) {
+                $this->addFlash('error', $exception->getMessage());
             }
             unset($insertForm);
             $insertForm = $this->createForm(InsertFormType::class, new Insert);
@@ -47,6 +52,8 @@ class SortedListController extends AbstractController
     public function intRemove(Request $request, int $integer): Response
     {
         $session = $request->getSession();
+
+        /** @var IntegerSortedLinkedList $intList */
         $intList = $session->get('intList');
         $intList->remove($integer);
         $session->set('intList', $intList);
@@ -57,6 +64,8 @@ class SortedListController extends AbstractController
     public function strRemove(Request $request, string $string): Response
     {
         $session = $request->getSession();
+
+        /** @var StringSortedLinkedList $strList */
         $strList = $session->get('strList');
         $strList->remove($string);
         $session->set('strList', $strList);

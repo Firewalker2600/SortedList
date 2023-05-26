@@ -2,59 +2,25 @@
 
 namespace App\Service;
 
-use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
-
-class SortedLinkedList extends \SplDoublyLinkedList
+abstract class SortedLinkedList extends \SplDoublyLinkedList
 {
-    /**
-     * @throws InvalidTypeException
-     */
-    private function findInsertionIndex(mixed $value): ?int
-    {
-        if($this->isEmpty()) {
-            return null;
-        }
-        $this->setIteratorMode($this::IT_MODE_FIFO);
-        $this->rewind();
-        switch(gettype($value)) {
-            case "integer":
-                while ($this->valid() && $this->current() < $value) {
-                    $this->next();
-                }
-                break;
-            case "string":
-                while ($this->valid() && strcmp($this->current(), $value) < 0) {
-                    $this->next();
-                }
-                break;
-            default:
-                throw new InvalidTypeException("SortedLinkedList supports only int and string values for now");
-        }
-        return $this->key();
-    }
+   abstract function findValueIndex($value): ?int;
 
-    public function insert(mixed $value): void
+    public function insert($value): void
     {
-        $index = $this->findInsertionIndex($value);
-        if($index === null) {
-            $this->push($value);
-        } else {
+        $index = $this->findValueIndex($value);
+        if($index !== null) {
             $this->add($index, $value);
+        } else {
+            $this->push($value);
         }
     }
 
-    public function find(mixed $value): ?int
+    public function remove($value): void
     {
-        $index = $this->findInsertionIndex($value);
-        $offsetValue = $index !== null ? $this->offsetGet($index) : null;
-        return  $offsetValue === $value ? $index : null;
-    }
-
-    public function remove(mixed $value): void
-    {
-        $index = $this->find($value);
-        if ($index !== null) {
-            $this->offsetUnset($index);
+        $index = $this->findValueIndex($value);
+        if ($index !== null && $this->offsetGet($index) === $value) {
+           $this->offsetUnset($index);
         }
     }
 }
