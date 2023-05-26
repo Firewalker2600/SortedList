@@ -22,6 +22,7 @@ class InsertFormType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_field_name' => '_token',
+            'attr' => ['id' => 'insert_form']
         ]);
     }
 }
