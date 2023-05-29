@@ -2,13 +2,13 @@
 
 namespace App\Service;
 
+/**
+ * @extends SortedLinkedList<int>
+ */
 class IntegerSortedLinkedList extends SortedLinkedList
 {
     public function findValueIndex($value): ?int
     {
-        if(!is_int($value)) {
-            throw new \InvalidArgumentException("IntegerSortedLinkedList nodes can only be integer");
-        }
         if($this->isEmpty()) {
             return null;
         }
@@ -19,5 +19,5 @@ class IntegerSortedLinkedList extends SortedLinkedList
             $this->next();
         }
         return $this->valid() ? $this->key(): null;
-        }
+    }
 }

@@ -2,7 +2,12 @@
 
 namespace App\Service;
 
-abstract class SortedLinkedList extends \SplDoublyLinkedList
+/**
+ * @template TValue
+ * @extends \SplDoublyLinkedList<TValue>
+ * @implements SortedLinkedListInterface<TValue>
+ */
+abstract class SortedLinkedList extends \SplDoublyLinkedList implements SortedLinkedListInterface
 {
    abstract function findValueIndex($value): ?int;
 

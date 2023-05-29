@@ -2,13 +2,13 @@
 
 namespace App\Service;
 
+/**
+ * @extends SortedLinkedList<string>
+ */
 class StringSortedLinkedList extends SortedLinkedList
 {
     public function findValueIndex($value): ?int
     {
-        if(!is_string($value)) {
-            throw new \InvalidArgumentException("SortedStringLinkedList nodes can only be strings");
-        }
         if($this->isEmpty()) {
             return null;
         }
