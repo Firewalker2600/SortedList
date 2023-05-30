@@ -9,6 +9,3 @@ https://hub.docker.com/r/josefrezek/sorted-linked-list/tags
 docker pull josefrezek/sorted-linked-list:latest
 
 on localhost:8000 a symfony local webserver should run with the app
-
-#### Note:
-solution only uses naive search algorhytm for search. For bigger lists a binary search would be a better solution.
