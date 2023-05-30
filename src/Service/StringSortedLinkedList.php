@@ -7,8 +7,15 @@ namespace App\Service;
  */
 class StringSortedLinkedList extends SortedLinkedList
 {
+    /**
+     * @param string $value
+     * @return int|null
+     */
     public function findValueIndex($value): ?int
     {
+        if(!is_string($value)) {
+            throw new \InvalidArgumentException("StringSortedLinkedList accepts only integer");
+        }
         if($this->isEmpty()) {
             return null;
         }

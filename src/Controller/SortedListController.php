@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Form\Insert;
-use App\Form\InsertFormType;
+use App\Form\IntegerFormRequest;
+use App\Form\IntegerFormType;
+use App\Form\StringFormRequest;
+use App\Form\StringFormType;
 use App\Service\IntegerSortedLinkedList;
 use App\Service\StringSortedLinkedList;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,32 +21,37 @@ class SortedListController extends AbstractController
         $session = $request->getSession();
         $intList = $session->get('intList') ?? new IntegerSortedLinkedList();
         $strList = $session->get('strList') ?? new StringSortedLinkedList();
-        $insertForm = $this->createForm(InsertFormType::class, new Insert);
-        $insertForm->handleRequest($request);
+        $integerFormRequest = new IntegerFormRequest();
+        $integerForm = $this->createForm(IntegerFormType::class, $integerFormRequest);
+        $stringFormRequest = new StringFormRequest();
+        $stringForm = $this->createForm(StringFormType::class, $stringFormRequest);
+        $integerForm->handleRequest($request);
+        $stringForm->handleRequest($request);
 
-        if($insertForm->isSubmitted() && $insertForm->isValid()) {
-            $data = $insertForm->getData();
-            $integer = $data->integer ?? null;
-            $string = $data->string ?? null;
-            try {
-                if($integer !== null) {
-                    $intList->insert((int)$integer);
-                    $session->set('intList', $intList);
-                }
-                if($string !== null) {
-                    $strList->insert($string);
-                    $session->set('strList', $strList);
-                }
-            } catch (InvalidArgumentException $exception) {
-                $this->addFlash('error', $exception->getMessage());
+        try {
+            if($integerForm->isSubmitted() && $integerForm->isValid()) {
+                $integer = $integerFormRequest->integer;
+                $intList->insert($integer);
+                $session->set('intList', $intList);
             }
-            unset($insertForm);
-            $insertForm = $this->createForm(InsertFormType::class, new Insert);
+
+            if($stringForm->isSubmitted() && $stringForm->isValid()) {
+                $string = $stringFormRequest->string;
+                $strList->insert($string);
+                $session->set('strList', $strList);
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $this->addFlash('error', $exception->getMessage());
         }
+
+        unset($integerForm, $stringForm);
+        $integerForm = $this->createForm(IntegerFormType::class, new IntegerFormRequest());
+        $stringForm = $this->createForm(StringFormType::class, new StringFormRequest());
         return $this->render('sortedlist/home.html.twig', [
             'intList' => $intList,
             'strList' => $strList,
-            'insert_form' => $insertForm->createView()
+            'integer_form' => $integerForm->createView(),
+            'string_form' => $stringForm->createView()
         ]);
     }
     #[Route('/api/int-remove/{integer<-?\d+>}', name: 'int-remove', methods: ['DELETE'])]

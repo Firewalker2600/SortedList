@@ -9,6 +9,9 @@ class IntegerSortedLinkedList extends SortedLinkedList
 {
     public function findValueIndex($value): ?int
     {
+        if(!is_integer($value)) {
+            throw new \InvalidArgumentException("IntegerSortedLinkedList accepts only integer");
+        }
         if($this->isEmpty()) {
             return null;
         }

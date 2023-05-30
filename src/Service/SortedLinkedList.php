@@ -9,9 +9,17 @@ namespace App\Service;
  */
 abstract class SortedLinkedList extends \SplDoublyLinkedList implements SortedLinkedListInterface
 {
-   abstract function findValueIndex($value): ?int;
+    /**
+     * @param mixed $value
+     * @return int|null
+     */
+    abstract function findValueIndex($value): ?int;
 
-    public function insert($value): void
+    /**
+     * @param mixed $value
+     * @return void
+     */
+   public function insert($value): void
     {
         $index = $this->findValueIndex($value);
         if($index !== null) {
@@ -21,6 +29,10 @@ abstract class SortedLinkedList extends \SplDoublyLinkedList implements SortedLi
         }
     }
 
+    /**
+     * @param mixed $value
+     * @return void
+     */
     public function remove($value): void
     {
         $index = $this->findValueIndex($value);

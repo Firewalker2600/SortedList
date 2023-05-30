@@ -1,4 +1,5 @@
-{% form_theme insert_form 'bootstrap_4_layout.html.twig' %}
+{% form_theme integer_form 'bootstrap_4_layout.html.twig' %}
+{% form_theme string_form 'bootstrap_4_layout.html.twig' %}
 {% extends 'base.html.twig' %}
 {% block title %}
     Sorted Linked List
@@ -7,10 +8,38 @@
     <div class="container">
         <h1>Sorted Linked List</h1>
         <div class="container">
-            {{ form_start(insert_form) }}
-            {{ form_widget(insert_form) }}
-            <input type="submit" value="Submit" class="btn btn-success">
-            {{ form_end(insert_form) }}
+            <div class="row align-items-center">
+                <div class="col-sm">
+                    {{ form_start(integer_form) }}
+                    <div class="row align-items-center">
+                        <div class="col-1"></div>
+                        <div class="col-6">
+                            {{ form_widget(integer_form) }}
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-sm text-center">
+                            <input type="submit" value="Submit" class="btn btn-success">
+                        </div>
+                    </div>
+                    {{ form_end(integer_form) }}
+                </div>
+                <div class="col-sm">
+                    {{ form_start(string_form) }}
+                    <div class="row align-items-center">
+                        <div class="col-1"></div>
+                        <div class="col-6">
+                            {{ form_widget(string_form) }}
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-sm text-center">
+                            <input type="submit" value="Submit" class="btn btn-success">
+                        </div>
+                    </div>
+                    {{ form_end(string_form) }}
+                </div>
+            </div>
         </div>
         <div class="container">
             <div class="row">

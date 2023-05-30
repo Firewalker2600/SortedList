@@ -12,27 +12,20 @@ class SortedListControllerTest extends WebTestCase
 
 use SessionHelper;
 
-    public function testHomePositive()
+    public function testIntegerFormPositive()
     {
         $client = static::createClient();
         $session = $this->createSession($client);
         $crawler = $client->request('GET', '/');
         $this->assertResponseIsSuccessful();
 
-        // Fill out the insert form with valid integer input
-        $form = $crawler->filter('#insert_form')->form();
-        $form['insert_form[integer]'] = 5;
-        $form['insert_form[string]'] = 'apple';
-        $client->submit($form);
-
+        $intForm = $crawler->filter('#integer_form')->form();
+        $intForm['integer_form[integer]'] = 5;
+        $client->submit($intForm);
         $intList = $session->get('intList');
-        $strList = $session->get('strList');
-
-        // Assert that the integer and string are inserted into the integer list
         $this->assertEquals(5, $intList->bottom());
-        $this->assertEquals('apple', $strList->bottom());
     }
-    public function testHomeNegative()
+    public function testHomeIntegerNegative()
     {
         $client = static::createClient();
         $session = $this->createSession($client);
@@ -40,16 +33,37 @@ use SessionHelper;
         $this->assertResponseIsSuccessful();
 
         // Fill out the insert form with invalid integer and string input
-        $form = $crawler->filter('#insert_form')->form();
-        $form['insert_form[integer]'] = 'not an integer';
-        $form['insert_form[string]'] = 10;
-        $client->submit($form);
-
+        $intForm = $crawler->filter('#integer_form')->form();
+        $intForm['integer_form[integer]'] = 'not an integer';
+        $client->submit($intForm);
         $intList = $session->get('intList');
-        $strList = $session->get('strList');
-
-        // Assert that the integer and string lists were not created
         $this->assertSame(null, $intList);
+    }
+    public function testHomeStringPositive(): void
+    {
+        $client = static::createClient();
+        $session = $this->createSession($client);
+        $crawler = $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+
+        $strForm = $crawler->filter('#string_form')->form();
+        $strForm['string_form[string]'] = 'apple';
+        $client->submit($strForm);
+        $strList = $session->get('strList');
+        $this->assertEquals('apple', $strList->bottom());
+    }
+
+    public function testHomeStringNegative(): void
+    {
+        $client = static::createClient();
+        $session = $this->createSession($client);
+        $crawler = $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+
+        $strForm = $crawler->filter('#string_form')->form();
+        $strForm['string_form[string]'] = null;
+        $client->submit($strForm);
+        $strList = $session->get('strList');
         $this->assertSame(null, $strList);
     }
         public function testIntRemovePositive(): void
