@@ -54,6 +54,10 @@ class MailerDispatchCommand extends Command
         return Command::SUCCESS;
     }
 
+    /**
+     * @param array{"body_data":array{"id":string, "date":string, "link":array{"url":string, "label":string}}, "key":string, "subject" : string, "email":string|array<string>, "bcc":null|string|array<string>} $parameters
+     * @return TemplatedEmail
+     */
     protected function buildEmail(array $parameters): TemplatedEmail
     {
         $data = $parameters["body_data"];

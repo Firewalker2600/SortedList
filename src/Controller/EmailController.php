@@ -34,7 +34,7 @@ class EmailController extends AbstractController
             ->setSent(false)
             ->setCreatedAt(new \DateTime)
             ->setDispatchAt($sendMailRequest->delay_send !== false
-                ? \DateTime::createFromFormat('Y-m-d', $sendMailRequest->delay_send)
+                ? \DateTime::createFromFormat('Y-m-d', $sendMailRequest->delay_send->format('Y-m-d'))
                 : new \DateTime()
             );
         $emailQueueRepository->save($emailQueueEntity);

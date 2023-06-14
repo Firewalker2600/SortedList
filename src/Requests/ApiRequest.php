@@ -47,7 +47,7 @@ abstract class ApiRequest
     {
         $messages = ['message' => 'Attribute validation failed.', 'errors' => []];
 
-        /** @var ConstraintViolation $ConstraintViolation  */
+        /** @var ConstraintViolation $constraintViolation  */
         foreach ($exception->getViolations() as $constraintViolation) {
             $messages['errors'][] = [
                 'property' => $constraintViolation->getPropertyPath(),

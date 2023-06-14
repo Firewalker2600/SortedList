@@ -13,6 +13,9 @@ class SendMailRequest extends ApiRequest
 
     #[Assert\NotBlank(), Assert\Type('string')]
     public string $subject; //email subject
+    /**
+     * @var array{"id":string, "date":string, "link":array{"url":string, "label":string}} $body_data
+     */
     #[Assert\NotBlank(), Assert\Collection(
         fields: [
          'id' => [
@@ -32,12 +35,17 @@ class SendMailRequest extends ApiRequest
         ]
     )]
     public array $body_data; // parameters for the email template
+    /**
+     * @var false|\DateTime
+     */
     #[Assert\NotNull, Assert\AtLeastOneOf([
         new Assert\IsFalse,
         new Assert\DateTime('Y-m-d'),
     ])]
     public bool|\DateTime $delay_send;
-
+    /**
+     * @var string|array<string> $email
+     */
     #[Assert\NotBlank, Assert\AtLeastOneOf([
         new Assert\Email,
         new Assert\All(
@@ -46,6 +54,9 @@ class SendMailRequest extends ApiRequest
     ])]
     public string|array $email; //target email address
 
+    /**
+     * @var string|array<string>|null
+     */
     #[Assert\AtLeastOneOf([
         new  Assert\Email,
         new Assert\All(
@@ -54,6 +65,9 @@ class SendMailRequest extends ApiRequest
     ])]
     public null|string|array $bcc = null; //  hidden copy email address
 
+    /**
+     * @return array{"key":string, "subject":string, "delay_send":false|\DateTime, "email":string|array<string>, "bcc":null|string|array<string>, "body_data":array{"id":string, "date":string, "link":array{"url":string, "label":string}}}
+     */
     public function getAll(): array
     {
         return [
