@@ -19,6 +19,14 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
+    App\Requests\ApiRequest:
+        abstract: true
+        arguments:
+            - '@monolog.logger'
+            - '@validator'
+    App\Requests\SendMailRequest:
+        parent: App\Requests\ApiRequest
+        autowire: true
+        autoconfigure: false
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
