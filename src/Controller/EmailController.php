@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -17,7 +16,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EmailController extends AbstractController
 {
     #[Route('/api/v1/send-email', name: 'send-email', methods: "POST")]
-    public function sendEmail(LoggerInterface $logger, ValidatorInterface $validator, MailerInterface $mailer, EmailQueueRepository $emailQueueRepository, EntityManagerInterface $em): JsonResponse
+    public function sendEmail(
+        LoggerInterface        $logger,
+        ValidatorInterface     $validator,
+        EmailQueueRepository   $emailQueueRepository,
+        EntityManagerInterface $em
+    ): JsonResponse
     {
         $sendMailRequest = new SendMailRequest($logger, $validator);
         try {
